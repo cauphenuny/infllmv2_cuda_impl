@@ -64,8 +64,11 @@ __global__ void max_pooling_1d_varlen_kernel(
     // Calculate input and output pointers
     // Input is packed: [num_heads, total_q, max_k]
     // We need to access the k values for this specific query
-    const T* in = input + bidh * cu_seqlens_q[batch_size] * max_seqlen_k + bidq_global * max_seqlen_k;
-    T* out = output + bidh * cu_seqlens_q[batch_size] * out_len + bidq_global * out_len;
+    size_t total_q_all = cu_seqlens_q[batch_size]; 
+    size_t in_offset = (size_t)bidh * total_q_all * (size_t)max_seqlen_k + (size_t)bidq_global * (size_t)max_seqlen_k;
+    const T* in = input + in_offset;
+    size_t out_offset = (size_t)bidh * total_q_all * (size_t)out_len + (size_t)bidq_global * (size_t)out_len;
+    T* out = output + out_offset;
     
     // Calculate query block index for masking
     int cache_len = cache_lens[batch_idx];  // Get cache_len for this batch
