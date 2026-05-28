@@ -1,0 +1,23 @@
+[build-system]
+requires = [
+	"setuptools>=61.0",
+	"wheel",
+	"torch>=1.12",
+	"packaging",
+	"psutil",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "infllm_v2"
+version = "0.0.0"
+description = "infllm_v2 cuda implementation with flash attention and cutlass"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+	"sglang-kernel==0.4.2.post2",
+	"torch>=1.12",
+]
+
+[tool.setuptools.packages.find]
+include = ["infllm_v2*"]
